@@ -1,24 +1,116 @@
+import 'package:fitness/models/categroy_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  List<CategoryModel> categories = [];
+
+  void _getCategories() {
+    categories = CategoryModel.getCategories();
+  }
 
   @override
   Widget build(BuildContext context) {
+    _getCategories();
     return Scaffold(
         appBar: appBar(),
         backgroundColor: Colors.white,
         body: Column(
-          children: [_searchWidget()],
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SearchWidget(),
+            SizedBox(
+              height: 20,
+            ),
+            CategoriesSection(categories: categories)
+          ],
         ));
   }
 }
 
-class _searchWidget extends StatelessWidget {
-  const _searchWidget({
+class CategoriesSection extends StatelessWidget {
+  const CategoriesSection({
     super.key,
+    required this.categories,
   });
+
+  final List<CategoryModel> categories;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 20),
+        child: Text('Category',
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.w600)),
+      ),
+      SizedBox(
+        height: 20,
+      ),
+      Container(
+        height: 150,
+        padding: EdgeInsets.only(left: 20),
+        child: ListView.separated(
+            itemCount: categories.length,
+            scrollDirection: Axis.horizontal,
+            separatorBuilder: (context, index) {
+              return SizedBox(
+                width: 20,
+              );
+            },
+            itemBuilder: (context, index) {
+              return Container(
+                width: 100,
+                decoration: BoxDecoration(
+                  color: categories[index].boxColor,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SvgPicture.asset(
+                          categories[index].iconPath,
+                          width: 30,
+                          height: 30,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      categories[index].name,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }),
+      )
+    ]);
+  }
+}
+
+class SearchWidget extends StatelessWidget {
+  const SearchWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
