@@ -15,28 +15,24 @@ class CategoryModel {
     List<CategoryModel> categories = [];
 
     categories.add(CategoryModel(
-      name: 'Breakfast',
-      iconPath: 'assets/icons/plate.svg',
-      boxColor: Color(0xffFCEFE3),
-    ));
+        name: 'Salad',
+        iconPath: 'assets/icons/plate.svg',
+        boxColor: Color(0xff9DCEFF)));
 
     categories.add(CategoryModel(
-      name: 'Lunch',
-      iconPath: 'assets/icons/pancakes.svg',
-      boxColor: Color(0xffF3E0E0),
-    ));
+        name: 'Cake',
+        iconPath: 'assets/icons/pancakes.svg',
+        boxColor: Color(0xffEEA4CE)));
 
     categories.add(CategoryModel(
-      name: 'Dinner',
-      iconPath: 'assets/icons/pie.svg',
-      boxColor: Color(0xffE3F0E3),
-    ));
+        name: 'Pie',
+        iconPath: 'assets/icons/pie.svg',
+        boxColor: Color(0xff9DCEFF)));
 
     categories.add(CategoryModel(
-      name: 'Snacks',
-      iconPath: 'assets/icons/orange-snacks.svg',
-      boxColor: Color(0xffE3E3F0),
-    ));
+        name: 'Smoothies',
+        iconPath: 'assets/icons/orange-snacks.svg',
+        boxColor: Color(0xffEEA4CE)));
 
     return categories;
   }

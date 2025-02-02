@@ -1,4 +1,5 @@
 import 'package:fitness/models/categroy_models.dart';
+import 'package:fitness/models/diet_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -6,14 +7,24 @@ class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   List<CategoryModel> categories = [];
+  List<DietModel> diets = [];
 
   void _getCategories() {
     categories = CategoryModel.getCategories();
   }
 
+  void _getDiets() {
+    diets = DietModel.getDiets();
+  }
+
+  void _getInitialInfo() {
+    _getCategories();
+    _getDiets();
+  }
+
   @override
   Widget build(BuildContext context) {
-    _getCategories();
+    _getInitialInfo();
     return Scaffold(
         appBar: appBar(),
         backgroundColor: Colors.white,
@@ -22,9 +33,80 @@ class HomePage extends StatelessWidget {
           children: [
             SearchWidget(),
             SizedBox(
-              height: 20,
+              height: 40,
             ),
-            CategoriesSection(categories: categories)
+            CategoriesSection(categories: categories),
+            SizedBox(
+              height: 40,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: Text(
+                    'Recommendation\nfor Diet',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  height: 240,
+                  padding: EdgeInsets.only(left: 20),
+                  child: ListView.separated(
+                    itemCount: diets.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        width: 210,
+                        decoration: BoxDecoration(
+                            color: diets[index].boxColor.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SvgPicture.asset(diets[index].iconPath),
+                            Column(
+                              children: [
+                                Text(
+                                  diets[index].name,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                      fontSize: 16),
+                                ),
+                                Text(
+                                  '${diets[index].level} | ${diets[index].duration} | ${diets[index].calorie}',
+                                  style: const TextStyle(
+                                      color: Color(0xff7B6F72),
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
+                            Container(
+                                height: 45,
+                                width: 130,
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(colors: [
+                                  Color(0xff9DCEFF),
+                                  Color(0xff92A3FD)
+                                ])))
+                          ],
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) => SizedBox(width: 25),
+                  ),
+                )
+              ],
+            )
           ],
         ));
   }
